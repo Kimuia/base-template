@@ -1,0 +1,52 @@
+'use client';
+
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
+import { create{{pascalCase entity}}Action } from '../{{dashCase entity}}-{{dashCase useCase}}.action';
+import { IDLE_FORM_STATE } from '@/shared/model';
+import type { FormState } from '@/shared/model';
+import type { {{pascalCase entity}}{{pascalCase useCase}}View } from '../{{dashCase entity}}-{{dashCase useCase}}.ui';
+
+export function {{pascalCase entity}}{{pascalCase useCase}}Form() {
+  const [state, formAction, isPending] = useActionState(
+    create{{pascalCase entity}}Action,
+    IDLE_FORM_STATE as FormState<{{pascalCase entity}}{{pascalCase useCase}}View>,
+  );
+
+  return (
+    <form action={formAction}>
+      {/* TODO: form fields */}
+
+      {state.success === false && state.fieldErrors && (
+        <div role="alert">
+          {Object.entries(state.fieldErrors).map(([field, errors]) => (
+            <p key={field} className="text-sm text-red-600">
+              {errors.join(', ')}
+            </p>
+          ))}
+        </div>
+      )}
+
+      {state.success === false && state.error && !state.fieldErrors && (
+        <p role="alert" className="text-sm text-red-600">
+          오류가 발생했습니다. 다시 시도해주세요.
+        </p>
+      )}
+
+      <SubmitButton />
+    </form>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+    >
+      {pending ? '처리중...' : '저장'}
+    </button>
+  );
+}

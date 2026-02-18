@@ -1,0 +1,43 @@
+'use server';
+
+import { z } from 'zod';
+import { revalidateTag } from 'next/cache';
+import { after } from 'next/server';
+import { {{camelCase entity}}Service, {{constantCase entity}}_TAGS } from '@/entity/{{dashCase entity}}';
+import { {{camelCase entity}}{{pascalCase useCase}}Adapter } from './{{dashCase entity}}-{{dashCase useCase}}.adapter';
+import { extractFieldErrors } from '@/shared/utils/zod';
+import type { FormState } from '@/shared/model/action';
+import type { {{pascalCase entity}}{{pascalCase useCase}}View } from './{{dashCase entity}}-{{dashCase useCase}}.ui';
+
+// React 19 useActionState 호환 시그니처: (prevState, formData)
+export async function create{{pascalCase entity}}Action(
+  prevState: FormState<{{pascalCase entity}}{{pascalCase useCase}}View>,
+  formData: FormData,
+): Promise<FormState<{{pascalCase entity}}{{pascalCase useCase}}View>> {
+  const raw = Object.fromEntries(formData);
+  // TODO: Zod 스키마로 입력 검증
+  // const validated = {{camelCase entity}}FormSchema.safeParse(raw);
+  // if (!validated.success) {
+  //   return {
+  //     success: false,
+  //     data: null,
+  //     error: 'VALIDATION_ERROR',
+  //     fieldErrors: extractFieldErrors(validated.error),
+  //   };
+  // }
+
+  try {
+    const result = await {{camelCase entity}}Service.create(raw as any);
+
+    revalidateTag({{constantCase entity}}_TAGS.list);
+
+    // after(): 응답 반환 후 비차단 실행 (로깅, 알림 등)
+    // after(async () => {
+    //   await analytics.track('{{snakeCase entity}}_created', { id: result.id });
+    // });
+
+    return { success: true, data: {{camelCase entity}}{{pascalCase useCase}}Adapter.toUI(result) };
+  } catch {
+    return { success: false, data: null, error: 'SERVER_ERROR' };
+  }
+}

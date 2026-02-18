@@ -1,0 +1,13 @@
+// Loader (읽기)
+export { get{{pascalCase entity}}{{pascalCase useCase}} } from './{{dashCase entity}}-{{dashCase useCase}}.loader';
+
+// Adapter
+export { {{camelCase entity}}{{pascalCase useCase}}Adapter } from './{{dashCase entity}}-{{dashCase useCase}}.adapter';
+
+// Types
+export type { {{pascalCase entity}}{{pascalCase useCase}}View } from './{{dashCase entity}}-{{dashCase useCase}}.ui';
+{{#if hasAction}}
+
+// Action (쓰기)
+export { create{{pascalCase entity}}Action } from './{{dashCase entity}}-{{dashCase useCase}}.action';
+{{/if}}

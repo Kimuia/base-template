@@ -1,0 +1,13 @@
+import { z } from 'zod';
+
+export const {{camelCase name}}ApiSchema = z.object({
+  {{snakeCase name}}_id: z.number(),
+  // TODO: API 응답 필드 정의
+  created_at: z.string(),
+});
+
+export type {{pascalCase name}}ApiResponse = z.infer<typeof {{camelCase name}}ApiSchema>;
+
+export interface {{pascalCase name}}ApiRequest {
+  // TODO: API 요청 필드 정의
+}

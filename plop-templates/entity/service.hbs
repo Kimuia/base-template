@@ -1,0 +1,35 @@
+import { api } from '@/shared/lib/fetcher';
+import { {{constantCase name}}_TAGS } from './{{dashCase name}}.constant';
+import type { {{pascalCase name}}ApiResponse, {{pascalCase name}}ApiRequest } from './{{dashCase name}}.schema';
+
+// 크로스-요청 캐싱이 필요한 경우 아래처럼 'use cache' 적용 가능:
+//
+// import { cacheLife, cacheTag } from 'next/cache';
+//
+// export async function getCached{{pascalCase name}}(id: string) {
+//   'use cache'
+//   cacheLife('hours')
+//   cacheTag({{constantCase name}}_TAGS.detail(id))
+//   return {{camelCase name}}Service.getById(id);
+// }
+
+export const {{camelCase name}}Service = {
+  getList: () =>
+    api.get<{{pascalCase name}}ApiResponse[]>('/{{dashCase name}}s', {
+      tags: {{constantCase name}}_TAGS.all(),
+    }),
+
+  getById: (id: string) =>
+    api.get<{{pascalCase name}}ApiResponse>(`/{{dashCase name}}s/${id}`, {
+      tags: {{constantCase name}}_TAGS.all(id),
+    }),
+
+  create: (data: {{pascalCase name}}ApiRequest) =>
+    api.post<{{pascalCase name}}ApiResponse>('/{{dashCase name}}s', data),
+
+  update: (id: string, data: Partial<{{pascalCase name}}ApiRequest>) =>
+    api.put<{{pascalCase name}}ApiResponse>(`/{{dashCase name}}s/${id}`, data),
+
+  delete: (id: string) =>
+    api.delete<void>(`/{{dashCase name}}s/${id}`),
+};

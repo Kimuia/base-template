@@ -1,0 +1,5 @@
+export const {{constantCase name}}_TAGS = {
+  list: '{{dashCase name}}s',
+  detail: (id: string) => `{{dashCase name}}-${id}`,
+  all: (id?: string) => (id ? ['{{dashCase name}}s', `{{dashCase name}}-${id}`] : ['{{dashCase name}}s']),
+} as const;

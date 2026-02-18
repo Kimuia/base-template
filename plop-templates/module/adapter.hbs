@@ -1,0 +1,23 @@
+import type { {{pascalCase entity}}ApiResponse } from '@/entity/{{dashCase entity}}';
+import type { {{pascalCase entity}}{{pascalCase useCase}}View } from './{{dashCase entity}}-{{dashCase useCase}}.ui';
+
+/**
+ * API ↔ UI 변환 어댑터
+ *
+ * 직렬화 최소화 (Vercel server-serialization):
+ * - toUI()에서 Client 컴포넌트가 실제로 필요한 필드만 반환
+ * - Date, BigInt 등 직렬화 불가 타입은 string/number로 변환
+ * - 중첩 객체 대신 flat 구조 선호
+ */
+export const {{camelCase entity}}{{pascalCase useCase}}Adapter = {
+  toUI(api: {{pascalCase entity}}ApiResponse): {{pascalCase entity}}{{pascalCase useCase}}View {
+    return {
+      // TODO: API → UI 변환 (snake_case → camelCase)
+      // Client에 필요한 최소 필드만 반환할 것
+    };
+  },
+
+  // toAPI(ui: FormData): ApiRequest {
+  //   return { /* camelCase → snake_case */ };
+  // },
+};

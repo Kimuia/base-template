@@ -1,0 +1,69 @@
+'use client';
+
+import { useOptimistic, startTransition } from 'react';
+import type { {{pascalCase entity}}{{pascalCase useCase}}View } from '../{{dashCase entity}}-{{dashCase useCase}}.ui';
+
+type OptimisticAction =
+  | { type: 'add'; item: {{pascalCase entity}}{{pascalCase useCase}}View }
+  | { type: 'delete'; id: string }
+  | { type: 'update'; id: string; data: Partial<{{pascalCase entity}}{{pascalCase useCase}}View> };
+
+export function use{{pascalCase entity}}{{pascalCase useCase}}Optimistic(
+  items: {{pascalCase entity}}{{pascalCase useCase}}View[],
+) {
+  const [optimisticItems, updateOptimistic] = useOptimistic(
+    items,
+    (state: {{pascalCase entity}}{{pascalCase useCase}}View[], action: OptimisticAction) => {
+      switch (action.type) {
+        case 'add':
+          return [...state, action.item];
+        case 'delete':
+          return state.filter((item) => item.id !== action.id);
+        case 'update':
+          return state.map((item) =>
+            item.id === action.id ? { ...item, ...action.data } : item,
+          );
+        default:
+          return state;
+      }
+    },
+  );
+
+  const optimisticAdd = (
+    item: {{pascalCase entity}}{{pascalCase useCase}}View,
+    serverAction: () => Promise<void>,
+  ) => {
+    startTransition(async () => {
+      updateOptimistic({ type: 'add', item });
+      await serverAction();
+    });
+  };
+
+  const optimisticDelete = (
+    id: string,
+    serverAction: () => Promise<void>,
+  ) => {
+    startTransition(async () => {
+      updateOptimistic({ type: 'delete', id });
+      await serverAction();
+    });
+  };
+
+  const optimisticUpdate = (
+    id: string,
+    data: Partial<{{pascalCase entity}}{{pascalCase useCase}}View>,
+    serverAction: () => Promise<void>,
+  ) => {
+    startTransition(async () => {
+      updateOptimistic({ type: 'update', id, data });
+      await serverAction();
+    });
+  };
+
+  return {
+    optimisticItems,
+    optimisticAdd,
+    optimisticDelete,
+    optimisticUpdate,
+  };
+}
