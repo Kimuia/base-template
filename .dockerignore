@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.gitignore
+.env*
+*.md
+docs/
+coverage/
+storybook-static/
+.storybook/
+**/*.test.ts
+**/*.test.tsx
+**/*.stories.tsx
+.DS_Store
