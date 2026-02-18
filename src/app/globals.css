@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+
+/* === 디자인 토큰 === */
+@theme {
+  --color-primary: #3b82f6;
+  --color-primary-dark: #2563eb;
+  --color-error: #ef4444;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+
+  --spacing-page: 1.5rem;
+  --radius-default: 0.5rem;
+
+  --font-sans: var(--font-sans, system-ui, -apple-system, sans-serif);
+}
+
+/* === 렌더링 최적화 유틸리티 === */
+
+/* content-visibility: 긴 목록 렌더링 최적화 (Vercel rendering-content-visibility) */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* === 애니메이션 === */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
